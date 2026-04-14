@@ -1,4 +1,4 @@
-// ========== LORENZ ATTRACTOR HERO BACKGROUND ==========
+// ========== HERO PARTICLE CAROUSEL ==========
 (function () {
   const canvas = document.getElementById('heroCanvas');
   if (!canvas) return;
@@ -16,91 +16,300 @@
   resize();
   window.addEventListener('resize', resize);
 
-  // Lorenz parameters
-  const sigma = 10, rho = 28, beta = 8 / 3;
-  const dt = 0.003;
-  const PARTICLE_COUNT = 600;
-  const TAIL_LENGTH = 12;
+  // ── Shared state ──
+  let animId, running = true;
+  let currentViz = 0;
+  let globalAlpha = 1; // for crossfade
+  let transitioning = false;
+  const CYCLE_INTERVAL = 12000; // 12s per visualization
+  const FADE_DURATION = 1500;
 
-  // Initialize particles spread across the attractor
-  const particles = [];
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    // Seed particles near the two attractor lobes with some randomness
-    const side = Math.random() > 0.5 ? 1 : -1;
-    particles.push({
-      x: side * (Math.sqrt(beta * (rho - 1)) + (Math.random() - 0.5) * 20),
-      y: side * (Math.sqrt(beta * (rho - 1)) + (Math.random() - 0.5) * 20),
-      z: rho - 1 + (Math.random() - 0.5) * 20,
-      trail: [],
-      hue: 210 + Math.random() * 40, // blue range 210-250
-      speed: 0.8 + Math.random() * 0.4,
-    });
-  }
+  // ════════════════════════════════════════
+  // VIZ 0: LORENZ ATTRACTOR
+  // ════════════════════════════════════════
+  const lorenz = {
+    sigma: 10, rho: 28, beta: 8 / 3, dt: 0.003,
+    particles: [], TAIL: 12, COUNT: 600,
 
-  // Pre-run simulation so trails are populated on first frame
-  for (let step = 0; step < TAIL_LENGTH + 10; step++) {
-    for (const p of particles) {
-      const dx = sigma * (p.y - p.x);
-      const dy = p.x * (rho - p.z) - p.y;
-      const dz = p.x * p.y - beta * p.z;
-      p.x += dx * dt * p.speed;
-      p.y += dy * dt * p.speed;
-      p.z += dz * dt * p.speed;
-      const sx = w / 2 + p.x * (w / 80);
-      const sy = h / 2 - (p.z - rho) * (h / 70);
-      p.trail.push({ x: sx, y: sy });
-      if (p.trail.length > TAIL_LENGTH) p.trail.shift();
+    init() {
+      this.particles = [];
+      for (let i = 0; i < this.COUNT; i++) {
+        const side = Math.random() > 0.5 ? 1 : -1;
+        this.particles.push({
+          x: side * (Math.sqrt(this.beta * (this.rho - 1)) + (Math.random() - 0.5) * 20),
+          y: side * (Math.sqrt(this.beta * (this.rho - 1)) + (Math.random() - 0.5) * 20),
+          z: this.rho - 1 + (Math.random() - 0.5) * 20,
+          trail: [],
+          hue: 210 + Math.random() * 40,
+          speed: 0.8 + Math.random() * 0.4,
+        });
+      }
+      // Pre-run
+      for (let step = 0; step < this.TAIL + 10; step++) this.step(false);
+    },
+
+    step(draw = true) {
+      for (const p of this.particles) {
+        const dx = this.sigma * (p.y - p.x);
+        const dy = p.x * (this.rho - p.z) - p.y;
+        const dz = p.x * p.y - this.beta * p.z;
+        p.x += dx * this.dt * p.speed;
+        p.y += dy * this.dt * p.speed;
+        p.z += dz * this.dt * p.speed;
+        const scale = Math.min(w / 80, h / 60);
+        const sx = w / 2 + p.x * scale;
+        const sy = h / 2 - (p.z - this.rho) * scale * 0.85;
+        p.trail.push({ x: sx, y: sy });
+        if (p.trail.length > this.TAIL) p.trail.shift();
+        if (!draw || p.trail.length < 2) continue;
+        ctx.beginPath();
+        ctx.moveTo(p.trail[0].x, p.trail[0].y);
+        for (let j = 1; j < p.trail.length; j++) ctx.lineTo(p.trail[j].x, p.trail[j].y);
+        const a = Math.min(0.15 + (p.z / 50) * 0.15, 0.35) * globalAlpha;
+        ctx.strokeStyle = `hsla(${p.hue}, 70%, 60%, ${a})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(sx, sy, 1, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, ${Math.min(a + 0.1, 0.5)})`;
+        ctx.fill();
+      }
     }
+  };
+
+  // ════════════════════════════════════════
+  // VIZ 1: GOLDEN RATIO SPIRAL
+  // ════════════════════════════════════════
+  const golden = {
+    particles: [], COUNT: 500, PHI: (1 + Math.sqrt(5)) / 2,
+    time: 0,
+
+    init() {
+      this.particles = [];
+      this.time = 0;
+      for (let i = 0; i < this.COUNT; i++) {
+        const angle = i * 2.399963; // golden angle in radians
+        const r = Math.sqrt(i) * 12;
+        this.particles.push({
+          baseAngle: angle,
+          baseR: r,
+          hue: 35 + (i / this.COUNT) * 25, // warm gold 35-60
+          size: 1.2 + Math.random() * 1.8,
+          phase: Math.random() * Math.PI * 2,
+          drift: 0.3 + Math.random() * 0.7,
+        });
+      }
+    },
+
+    step() {
+      this.time += 0.008;
+      for (const p of this.particles) {
+        const breathe = 1 + Math.sin(this.time * 0.5 + p.phase) * 0.15;
+        const spiralSpin = this.time * 0.2 * p.drift;
+        const angle = p.baseAngle + spiralSpin;
+        const r = p.baseR * breathe;
+        const x = w / 2 + Math.cos(angle) * r;
+        const y = h / 2 + Math.sin(angle) * r;
+        const distFromCenter = r / (Math.sqrt(this.COUNT) * 12);
+        const a = (0.3 + (1 - distFromCenter) * 0.5) * globalAlpha;
+        ctx.beginPath();
+        ctx.arc(x, y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 75%, 60%, ${a})`;
+        ctx.fill();
+      }
+      // Draw faint spiral arms
+      ctx.beginPath();
+      for (let arm = 0; arm < 5; arm++) {
+        const armOffset = arm * (Math.PI * 2 / 5);
+        for (let t = 0; t < 200; t++) {
+          const angle = t * 0.08 + armOffset + this.time * 0.2;
+          const r = t * 1.8;
+          const x = w / 2 + Math.cos(angle) * r;
+          const y = h / 2 + Math.sin(angle) * r;
+          if (t === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+      }
+      ctx.strokeStyle = `hsla(45, 60%, 50%, ${0.12 * globalAlpha})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  };
+
+  // ════════════════════════════════════════
+  // VIZ 2: ROTATING PARTICLE SPHERE
+  // ════════════════════════════════════════
+  const sphere = {
+    particles: [], COUNT: 800, time: 0,
+
+    init() {
+      this.particles = [];
+      this.time = 0;
+      for (let i = 0; i < this.COUNT; i++) {
+        // Fibonacci sphere distribution
+        const y = 1 - (i / (this.COUNT - 1)) * 2;
+        const radiusAtY = Math.sqrt(1 - y * y);
+        const theta = this.COUNT * 2.399963 * i / this.COUNT;
+        this.particles.push({
+          ox: radiusAtY * Math.cos(theta),
+          oy: y,
+          oz: radiusAtY * Math.sin(theta),
+          hue: 160 + Math.random() * 40, // teal-cyan 160-200
+          size: 1 + Math.random() * 1.5,
+        });
+      }
+    },
+
+    step() {
+      this.time += 0.005;
+      const R = Math.min(w, h) * 0.38;
+      const cosT = Math.cos(this.time), sinT = Math.sin(this.time);
+      const cosT2 = Math.cos(this.time * 0.7), sinT2 = Math.sin(this.time * 0.7);
+
+      // Sort by z for depth ordering
+      const projected = this.particles.map(p => {
+        // Rotate Y axis
+        let x = p.ox * cosT + p.oz * sinT;
+        let z = -p.ox * sinT + p.oz * cosT;
+        let y = p.oy;
+        // Rotate X axis (tilt)
+        const y2 = y * cosT2 - z * sinT2;
+        const z2 = y * sinT2 + z * cosT2;
+        return { x, y: y2, z: z2, hue: p.hue, size: p.size };
+      });
+      projected.sort((a, b) => a.z - b.z);
+
+      for (const p of projected) {
+        const depth = (p.z + 1) / 2; // 0 (back) to 1 (front)
+        const scale = 0.7 + depth * 0.3;
+        const sx = w / 2 + p.x * R * scale;
+        const sy = h / 2 + p.y * R * scale;
+        const a = (0.2 + depth * 0.5) * globalAlpha;
+        ctx.beginPath();
+        ctx.arc(sx, sy, p.size * scale, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 65%, ${45 + depth * 25}%, ${a})`;
+        ctx.fill();
+      }
+    }
+  };
+
+  // ════════════════════════════════════════
+  // VIZ 3: TORUS KNOT
+  // ════════════════════════════════════════
+  const torus = {
+    particles: [], COUNT: 600, time: 0,
+
+    init() {
+      this.particles = [];
+      this.time = 0;
+      for (let i = 0; i < this.COUNT; i++) {
+        this.particles.push({
+          t: (i / this.COUNT) * Math.PI * 2,
+          hue: 280 + Math.random() * 50, // purple-magenta 280-330
+          size: 1 + Math.random() * 1.5,
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
+    },
+
+    step() {
+      this.time += 0.004;
+      const R1 = Math.min(w, h) * 0.35; // major radius
+      const R2 = R1 * 0.4; // minor radius
+      const cosRot = Math.cos(this.time), sinRot = Math.sin(this.time);
+      const tiltCos = Math.cos(0.4), tiltSin = Math.sin(0.4);
+
+      for (const p of this.particles) {
+        const t = p.t + this.time * 0.3;
+        // Torus knot: p=2, q=3
+        const knotP = 2, knotQ = 3;
+        const r = R2 * Math.cos(knotQ * t) + R1;
+        let x = r * Math.cos(knotP * t);
+        let y = r * Math.sin(knotP * t);
+        let z = R2 * Math.sin(knotQ * t);
+
+        // Add subtle breathing
+        const breathe = 1 + Math.sin(this.time + p.phase) * 0.05;
+        x *= breathe; y *= breathe; z *= breathe;
+
+        // Rotate around Y
+        const x2 = x * cosRot + z * sinRot;
+        const z2 = -x * sinRot + z * cosRot;
+
+        // Tilt
+        const y2 = y * tiltCos - z2 * tiltSin;
+        const z3 = y * tiltSin + z2 * tiltCos;
+
+        const depth = (z3 / (R1 + R2) + 1) / 2;
+        const sx = w / 2 + x2;
+        const sy = h / 2 + y2;
+        const a = (0.2 + depth * 0.5) * globalAlpha;
+        ctx.beginPath();
+        ctx.arc(sx, sy, p.size * (0.6 + depth * 0.4), 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 65%, ${40 + depth * 30}%, ${a})`;
+        ctx.fill();
+      }
+    }
+  };
+
+  // ── Visualization registry ──
+  const vizzes = [lorenz, golden, sphere, torus];
+  vizzes.forEach(v => v.init());
+
+  // ── Crossfade transition ──
+  function transitionTo(nextIdx) {
+    if (transitioning) return;
+    transitioning = true;
+    const fadeOut = performance.now();
+
+    function fade() {
+      const elapsed = performance.now() - fadeOut;
+      if (elapsed < FADE_DURATION / 2) {
+        // Fade out current
+        globalAlpha = 1 - (elapsed / (FADE_DURATION / 2));
+      } else if (elapsed < FADE_DURATION) {
+        // Switch and fade in
+        if (currentViz !== nextIdx) {
+          currentViz = nextIdx;
+          // Full clear to remove artifacts from previous viz
+          ctx.fillStyle = '#0a0a0a';
+          ctx.fillRect(0, 0, w, h);
+          vizzes[currentViz].init();
+          // Pre-run lorenz if needed
+          if (currentViz === 0) {
+            for (let s = 0; s < lorenz.TAIL + 10; s++) lorenz.step();
+          }
+        }
+        globalAlpha = (elapsed - FADE_DURATION / 2) / (FADE_DURATION / 2);
+      } else {
+        globalAlpha = 1;
+        transitioning = false;
+        return;
+      }
+      requestAnimationFrame(fade);
+    }
+    fade();
   }
 
-  let animId;
-  let running = true;
+  // ── Auto-cycle ──
+  setInterval(() => {
+    if (!running) return;
+    const next = (currentViz + 1) % vizzes.length;
+    transitionTo(next);
+  }, CYCLE_INTERVAL);
 
+  // ── Main draw loop ──
   function draw() {
     if (!running) return;
     animId = requestAnimationFrame(draw);
-
-    // Semi-transparent clear for subtle trail persistence
-    ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
-    ctx.fillRect(0, 0, w, h);
-
-    for (const p of particles) {
-      // Lorenz step
-      const dx = sigma * (p.y - p.x);
-      const dy = p.x * (rho - p.z) - p.y;
-      const dz = p.x * p.y - beta * p.z;
-      p.x += dx * dt * p.speed;
-      p.y += dy * dt * p.speed;
-      p.z += dz * dt * p.speed;
-
-      // Project to screen — centered, scaled to fill hero
-      const scale = Math.min(w / 80, h / 60);
-      const sx = w / 2 + p.x * scale;
-      const sy = h / 2 - (p.z - rho) * scale * 0.85;
-
-      p.trail.push({ x: sx, y: sy });
-      if (p.trail.length > TAIL_LENGTH) p.trail.shift();
-
-      // Draw trail
-      if (p.trail.length < 2) continue;
-      ctx.beginPath();
-      ctx.moveTo(p.trail[0].x, p.trail[0].y);
-      for (let j = 1; j < p.trail.length; j++) {
-        ctx.lineTo(p.trail[j].x, p.trail[j].y);
-      }
-      const alpha = 0.15 + (p.z / 50) * 0.15; // depth-based opacity
-      ctx.strokeStyle = `hsla(${p.hue}, 70%, 60%, ${Math.min(alpha, 0.35)})`;
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
-
-      // Draw head particle
-      ctx.beginPath();
-      ctx.arc(sx, sy, 1, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, ${Math.min(alpha + 0.1, 0.5)})`;
-      ctx.fill();
+    // Lorenz needs trail persistence; others get full clear
+    if (currentViz === 0) {
+      ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
+    } else {
+      ctx.fillStyle = '#0a0a0a';
     }
+    ctx.fillRect(0, 0, w, h);
+    vizzes[currentViz].step();
   }
-
   draw();
 
   // Pause when hero is off-screen

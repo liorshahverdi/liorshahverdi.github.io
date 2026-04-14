@@ -436,6 +436,17 @@ button {
   color: #3b82f6;
 }
 
+.footer__left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.footer__credit {
+  font-size: 0.7rem;
+  color: #444;
+}
+
 .footer__links {
   display: flex;
   gap: 1.5rem;
