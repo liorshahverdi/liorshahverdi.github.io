@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lior Shahverdi — Software Engineer</title>
+  <meta name="description" content="Portfolio of Lior Shahverdi — software engineer building tools that work offline.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a href="#" class="nav__logo font-mono">Lior Shahverdi</a>
+    <div class="nav__links">
+      <a href="#projects" class="nav__link">Projects</a>
+      <a href="https://github.com/liorshahverdi" target="_blank" rel="noopener" class="nav__link nav__link--icon" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1 class="hero__name font-serif">Lior Shahverdi</h1>
+    <p class="hero__tagline font-mono">Software Engineer — building tools that work offline</p>
+    <div class="hero__scroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="projects">
+
+    <!-- 01 — Browser Jockey -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="Browser Jockey screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/browser-jockey/1.png" alt="Browser Jockey DJ interface" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/browser-jockey/2.png" alt="Browser Jockey track controls" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/browser-jockey/3.png" alt="Browser Jockey mixer section" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">01</div>
+          <h2 class="project__name font-serif">Browser Jockey</h2>
+          <p class="project__desc">A dual-track DJ mixing web app with multi-track sequencer, BPM detection, beat snap, hot cues, 3D audio visualization, microphone vocoder/auto-tune, and a live Strudel pattern deck for coding beats in the browser.</p>
+          <div class="project__tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Web Audio API</span>
+            <span class="tag">Three.js</span>
+            <span class="tag">Strudel</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/browser_jockey" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+            <a href="https://liorshahverdi.github.io/browser_jockey/" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 02 — Luckaro -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="Luckaro screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/luckaro/1.png" alt="Luckaro gameplay" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/luckaro/2.png" alt="Luckaro card selection" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/luckaro/3.png" alt="Luckaro destruction" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">02</div>
+          <h2 class="project__name font-serif">Luckaro</h2>
+          <p class="project__desc">A physics-based destruction game blending Angry Birds with Balatro mechanics. Flick playing cards at structures to destroy blocks using a power × luck system, with wave progression, charms, consumables, and a shop.</p>
+          <div class="project__tags">
+            <span class="tag">Three.js</span>
+            <span class="tag">Cannon-es</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Web Audio</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/Luckaro" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 — voice-news -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="voice-news screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/voice-news/1.png" alt="voice-news homepage" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/voice-news/2.png" alt="voice-news dashboard" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/voice-news/3.png" alt="voice-news trends" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">03</div>
+          <h2 class="project__name font-serif">voice-news</h2>
+          <p class="project__desc">A privacy-first spoken news briefing that pulls headlines from RSS, Hacker News, and Reddit, deduplicates stories, writes a podcast-style script with a local LLM, and reads it aloud using on-device TTS — no cloud APIs required.</p>
+          <div class="project__tags">
+            <span class="tag">Python</span>
+            <span class="tag">Ollama</span>
+            <span class="tag">Kokoro TTS</span>
+            <span class="tag">RSS</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/voice-news" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 — File Push -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="File Push screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/file-push/1.png" alt="File Push file browser" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/file-push/2.png" alt="File Push folder navigation" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/file-push/3.png" alt="File Push home view" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">04</div>
+          <h2 class="project__name font-serif">File Push</h2>
+          <p class="project__desc">Wireless file transfer over WiFi with zero friction. Serve a folder, scan a QR code, download files on your phone. Multi-folder support, PIN auth, uploads, ZIP archives — all traffic stays on your LAN.</p>
+          <div class="project__tags">
+            <span class="tag">Python</span>
+            <span class="tag">aiohttp</span>
+            <span class="tag">Typer</span>
+            <span class="tag">QR Code</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/file-push" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 05 — Markdown Notes -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="Markdown Notes screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/markdown-notes/1.png" alt="Markdown Notes sidebar" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/markdown-notes/2.png" alt="Markdown Notes editor" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/markdown-notes/3.png" alt="Markdown Notes knowledge graph" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">05</div>
+          <h2 class="project__name font-serif">Markdown Notes</h2>
+          <p class="project__desc">A local-first, AI-augmented markdown note-taking app with knowledge graph extraction, RAG-powered chat via local LLMs, voice dictation, and semantic search with re-ranking via entity relationships.</p>
+          <div class="project__tags">
+            <span class="tag">SvelteKit</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">CodeMirror</span>
+            <span class="tag">Ollama</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/markdown-notes" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 06 — PDF Audio -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="PDF Audio screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><div class="carousel__placeholder">screenshot coming soon</div></div>
+              <div class="carousel__slide"><div class="carousel__placeholder">screenshot coming soon</div></div>
+              <div class="carousel__slide"><div class="carousel__placeholder">screenshot coming soon</div></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">06</div>
+          <h2 class="project__name font-serif">PDF Audio</h2>
+          <p class="project__desc">Convert PDF research papers into lecture-style audio entirely offline. Extracts text via PyMuPDF4LLM, cleans and chunks content, then synthesizes natural speech using Kokoro TTS — no API keys required.</p>
+          <div class="project__tags">
+            <span class="tag">Python</span>
+            <span class="tag">PyMuPDF</span>
+            <span class="tag">Kokoro TTS</span>
+            <span class="tag">ffmpeg</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/pdf-audio" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 07 — PhysIQ -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="PhysIQ screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/physiq/1.png" alt="PhysIQ dashboard" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/physiq/2.png" alt="PhysIQ meals tracking" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/physiq/3.png" alt="PhysIQ activities view" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">07</div>
+          <h2 class="project__name font-serif">PhysIQ</h2>
+          <p class="project__desc">Private, offline-first fitness coaching with a Rust TUI desktop app and native Kotlin Android app. Voice-input meal and exercise tracking, local LLM recommendations, GPS activity tracking, and LAN-based device sync.</p>
+          <div class="project__tags">
+            <span class="tag">Rust</span>
+            <span class="tag">Ratatui</span>
+            <span class="tag">Kotlin</span>
+            <span class="tag">Jetpack Compose</span>
+            <span class="tag">Ollama</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/physiq" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 08 — Trivia Jam -->
+    <article class="project">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="Trivia Jam screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/trivia-jam/1.png" alt="Trivia Jam lobby" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/trivia-jam/2.png" alt="Trivia Jam host game setup" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/trivia-jam/3.png" alt="Trivia Jam categories" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">08</div>
+          <h2 class="project__name font-serif">Trivia Jam</h2>
+          <p class="project__desc">A real-time multiplayer trivia game with host/player roles over WebSockets. Category-based questions, game modes, leaderboards, and automatic question crawling from online sources every 6 hours.</p>
+          <div class="project__tags">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Socket.io</span>
+            <span class="tag">Express</span>
+            <span class="tag">PostgreSQL</span>
+          </div>
+          <div class="project__links">
+            <a href="https://github.com/liorshahverdi/trivia-jam" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span class="font-mono">&copy; 2025 Lior Shahverdi</span>
+    <div class="footer__links">
+      <a href="https://github.com/liorshahverdi" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:lior@shahverdi.dev">Email</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
