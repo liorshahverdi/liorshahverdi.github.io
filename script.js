@@ -251,8 +251,78 @@
     }
   };
 
+  // ════════════════════════════════════════
+  // VIZ 4: QUANTUM CHRYSALIS (WAWAWAA)
+  // ════════════════════════════════════════
+  const chrysalis = {
+    particles: [], COUNT: 700, time: 0,
+    amplitude: 3.5, complexity: 8.0, flowSpeed: 0.5,
+
+    init() {
+      this.particles = [];
+      this.time = 0;
+      for (let i = 0; i < this.COUNT; i++) {
+        this.particles.push({
+          ratio: i / this.COUNT,
+          hue: 0,
+          size: 1 + Math.random() * 1.5,
+        });
+      }
+    },
+
+    step() {
+      this.time += 0.008;
+      const R = Math.min(w, h) * 0.32;
+      const scale = R / 15;
+
+      for (const p of this.particles) {
+        const ratio = p.ratio;
+        const phi = Math.acos(1 - 2 * ratio);
+        const theta = Math.sqrt(this.COUNT * Math.PI) * phi;
+
+        const pulse = Math.sin(this.time * this.flowSpeed + ratio * this.complexity);
+        const radius = 15 + pulse * this.amplitude;
+
+        // Base sphere position
+        let bx = radius * Math.sin(phi) * Math.cos(theta + this.time);
+        let by = radius * Math.sin(phi) * Math.sin(theta + this.time);
+        let bz = radius * Math.cos(phi) + Math.cos(ratio * 50 + this.time) * 2.0;
+
+        // Attractor distortion
+        const ax = bx + Math.sin(by * 0.2 + this.time) * this.amplitude;
+        const ay = by + Math.cos(bx * 0.2 + this.time) * this.amplitude;
+        const az = bz + Math.sin(this.time * 0.5) * 5.0;
+
+        // Rotate around Y
+        const cosR = Math.cos(this.time * 0.15), sinR = Math.sin(this.time * 0.15);
+        const rx = ax * cosR + az * sinR;
+        const rz = -ax * sinR + az * cosR;
+
+        // Tilt
+        const tiltCos = Math.cos(0.3), tiltSin = Math.sin(0.3);
+        const ry = ay * tiltCos - rz * tiltSin;
+        const rz2 = ay * tiltSin + rz * tiltCos;
+
+        const depth = (rz2 + 20) / 40;
+        const sx = w / 2 + rx * scale;
+        const sy = h / 2 + ry * scale;
+
+        // Rainbow hue cycling
+        const hue = ((ratio + this.time * 0.05) % 1.0) * 360;
+        const sat = 0.6 + Math.sin(ratio * 10 + this.time) * 0.3;
+        const lit = 40 + Math.cos(phi + this.time) * 15 + depth * 15;
+        const a = (0.2 + depth * 0.5) * globalAlpha;
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, p.size * (0.6 + depth * 0.4), 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${hue}, ${sat * 100}%, ${lit}%, ${a})`;
+        ctx.fill();
+      }
+    }
+  };
+
   // ── Visualization registry ──
-  const vizzes = [lorenz, golden, sphere, torus];
+  const vizzes = [lorenz, golden, sphere, torus, chrysalis];
   vizzes.forEach(v => v.init());
 
   // ── Crossfade transition ──
