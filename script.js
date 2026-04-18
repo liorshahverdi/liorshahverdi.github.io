@@ -464,7 +464,6 @@
     TRI_H = SIDE * Math.sqrt(3) / 2;
     COLS = Math.ceil(w / (SIDE / 2)) + 2;
     ROWS = Math.floor(h / TRI_H) - 1;
-    if (ROWS % 2 !== 0) ROWS--; // keep even for 2-row drop parity
     initGrid();
   }
 
@@ -639,9 +638,7 @@
     const colorIdx = Math.floor(Math.random() * PIECE_COLORS.length);
     // Find width of this rotation to center spawn
     const maxDc = Math.max(...piece.offsets[rot].map(([dc]) => dc));
-    let col = Math.floor(Math.random() * (COLS - maxDc - 1));
-    // Ensure even col so parity is consistent with even spawn row
-    if (col % 2 !== 0) col = Math.max(0, col - 1);
+    const col = Math.floor(Math.random() * Math.max(1, COLS - maxDc - 1));
     activePiece = {
       offsets: piece.offsets,
       col, row: 0, rot, colorIdx
@@ -659,10 +656,8 @@
     const { offsets, rot } = activePiece;
     const cells = offsets[rot];
 
-    // Auto-play: pieces fall straight down with fixed rotation (set at spawn)
-
-    // Drop by 2 rows to preserve triangle orientation parity
-    const newRow = activePiece.row + 2;
+    // Drop by 1 row
+    const newRow = activePiece.row + 1;
     if (collides(offsets[activePiece.rot], activePiece.col, newRow)) {
       lockPiece();
       spawnPiece();
@@ -690,15 +685,14 @@
     const cells = offsets[rot];
 
     if (key === 'ArrowLeft') {
-      if (!collides(cells, col - 2, row)) activePiece.col -= 2;
+      if (!collides(cells, col - 1, row)) activePiece.col--;
     } else if (key === 'ArrowRight') {
-      if (!collides(cells, col + 2, row)) activePiece.col += 2;
+      if (!collides(cells, col + 1, row)) activePiece.col++;
     } else if (key === 'ArrowUp') {
       const nextRot = (rot + 1) % offsets.length;
       if (!collides(offsets[nextRot], col, row)) activePiece.rot = nextRot;
     } else if (key === 'ArrowDown') {
-      const newRow = row + 2;
-      if (!collides(offsets[rot], col, newRow)) activePiece.row = newRow;
+      if (!collides(offsets[rot], col, row + 1)) activePiece.row++;
     }
   }
   window.addEventListener('keydown', onKeyDown);
