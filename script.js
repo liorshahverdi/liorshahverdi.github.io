@@ -666,11 +666,6 @@
     // Drop by 2 rows to preserve triangle orientation parity
     const newRow = activePiece.row + 2;
     if (collides(offsets[activePiece.rot], activePiece.col, newRow)) {
-      // Try 1 row as final landing
-      const oneRow = activePiece.row + 1;
-      if (!collides(offsets[activePiece.rot], activePiece.col, oneRow)) {
-        activePiece.row = oneRow;
-      }
       lockPiece();
       spawnPiece();
     } else {
