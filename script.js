@@ -432,6 +432,7 @@
   let DROP_INTERVAL = 2000;
   let hintEl = null;
   let score = 0;
+  let scoreEl = null;
 
   // ── Piece definitions ──
   // All pieces are horizontal strips or simple blocks that tile rows easily.
@@ -540,15 +541,9 @@
     });
   }
 
-  function drawScore() {
-    if (score === 0) return;
-    ctx.save();
-    ctx.globalAlpha = 0.5;
-    ctx.fillStyle = 'rgba(255,255,255,1)';
-    ctx.font = '600 0.75rem monospace';
-    ctx.textAlign = 'right';
-    ctx.fillText(score.toLocaleString(), w - 16, 28);
-    ctx.restore();
+  function updateScore() {
+    if (!scoreEl) return;
+    scoreEl.textContent = score > 0 ? score.toLocaleString() : '';
   }
 
   function drawBoundary() {
@@ -579,7 +574,7 @@
     drawBoundary();
     drawLockedCells();
     drawActivePiece();
-    drawScore();
+    updateScore();
   }
 
   // ── Collision ──
@@ -705,7 +700,7 @@
   }
   window.addEventListener('keydown', onKeyDown);
 
-  // ── Hint text ──
+  // ── Hint text + score display ──
   function createHint() {
     hintEl = document.createElement('span');
     hintEl.textContent = 'press arrow keys to play';
@@ -719,6 +714,16 @@
     });
     heroEl.appendChild(hintEl);
     setTimeout(() => { if (hintEl) hintEl.style.opacity = '1'; }, 3500);
+
+    scoreEl = document.createElement('span');
+    Object.assign(scoreEl.style, {
+      position: 'absolute', top: '1rem', right: '1.5rem',
+      fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: '600',
+      color: 'rgba(255,255,255,0.25)',
+      pointerEvents: 'none', zIndex: '2',
+      letterSpacing: '0.05em',
+    });
+    heroEl.appendChild(scoreEl);
   }
 
   // ── Main loop ──
