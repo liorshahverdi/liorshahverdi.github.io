@@ -453,9 +453,9 @@
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    SIDE = w < 480 ? 40 : 60;
+    COLS = w < 480 ? 8 : 10;
+    SIDE = (w / COLS) * 2; // scale triangles to fill width
     TRI_H = SIDE * Math.sqrt(3) / 2;
-    COLS = Math.floor(w / (SIDE / 2));
     ROWS = Math.floor(h / TRI_H) - 1;
     initGrid();
   }
@@ -542,7 +542,7 @@
 
   function updateScore() {
     if (!scoreEl) return;
-    scoreEl.textContent = score > 0 ? score.toLocaleString() : '';
+    scoreEl.textContent = score.toLocaleString();
   }
 
   function drawBoundary() {
