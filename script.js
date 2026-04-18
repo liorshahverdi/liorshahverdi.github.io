@@ -435,21 +435,14 @@
   let scoreEl = null;
 
   // ── Piece definitions ──
-  // Offsets [dc,dr]. Adjacent rows (dr+1) share edges in the tri grid.
-  // Drop-by-2 preserves parity for all cells uniformly.
+  // Horizontal by default, ArrowUp rotates to vertical.
   const PIECES = [
+    // Single triangle
+    { offsets: [[[0,0]]] },
     // Pair: horizontal / vertical
     { offsets: [[[0,0],[1,0]], [[0,0],[0,1]]] },
-    // Strip-3: horizontal / vertical
+    // Triple: horizontal / vertical
     { offsets: [[[0,0],[1,0],[2,0]], [[0,0],[0,1],[0,2]]] },
-    // Strip-4: horizontal / vertical
-    { offsets: [[[0,0],[1,0],[2,0],[3,0]], [[0,0],[0,1],[0,2],[0,3]]] },
-    // Strip-5: horizontal / vertical
-    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0]], [[0,0],[0,1],[0,2],[0,3],[0,4]]] },
-    // Strip-6: horizontal only (vertical too tall)
-    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]]] },
-    // Block (2x2): symmetric
-    { offsets: [[[0,0],[1,0],[0,1],[1,1]]] },
   ];
 
   // ── DPI + sizing ──
