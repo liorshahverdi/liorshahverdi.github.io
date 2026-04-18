@@ -433,44 +433,21 @@
   let hintEl = null;
   let score = 0;
 
-  // ── Piece definitions (polyiamonds) ──
+  // ── Piece definitions ──
+  // All pieces are horizontal strips or simple blocks that tile rows easily.
   // Offsets are [dc,dr] in triangle-grid coords.
-  // Multiple rotations per piece for variety.
   const PIECES = [
-    // Diamond (2 tri) — horizontal / vertical / diagonal
-    { offsets: [
-      [[0,0],[1,0]],
-      [[0,0],[0,1]],
-      [[0,0],[-1,1]],
-    ]},
-    // Strip-3 — horizontal / vertical / diagonal
-    { offsets: [
-      [[0,0],[1,0],[2,0]],
-      [[0,0],[0,1],[0,2]],
-      [[0,0],[-1,1],[-2,2]],
-    ]},
-    // Corner (L-shape) — 6 orientations
-    { offsets: [
-      [[0,0],[1,0],[1,1]],
-      [[0,0],[0,1],[1,1]],
-      [[0,0],[1,0],[0,1]],
-      [[1,0],[0,1],[1,1]],
-      [[0,0],[1,0],[-1,1]],
-      [[0,0],[-1,1],[0,1]],
-    ]},
-    // Chevron (4 tri zigzag) — 3 orientations
-    { offsets: [
-      [[0,0],[1,0],[1,1],[2,1]],
-      [[0,0],[0,1],[1,1],[1,2]],
-      [[0,0],[1,0],[-1,1],[0,1]],
-    ]},
-    // Strip-4 — horizontal / vertical / diagonal
-    { offsets: [
-      [[0,0],[1,0],[2,0],[3,0]],
-      [[0,0],[0,1],[0,2],[0,3]],
-      [[0,0],[-1,1],[-2,2],[-3,3]],
-    ]},
-    // Block (2x2 compact) — 1 orientation (symmetric)
+    // Pair (2 wide)
+    { offsets: [[[0,0],[1,0]]] },
+    // Strip-3 (3 wide)
+    { offsets: [[[0,0],[1,0],[2,0]]] },
+    // Strip-4 (4 wide)
+    { offsets: [[[0,0],[1,0],[2,0],[3,0]]] },
+    // Strip-5 (5 wide)
+    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0]]] },
+    // Strip-6 (6 wide — fills fast)
+    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]]] },
+    // Block (2x2 — rhombus)
     { offsets: [[[0,0],[1,0],[0,1],[1,1]]] },
   ];
 
