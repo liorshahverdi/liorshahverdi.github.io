@@ -658,23 +658,7 @@
     const { offsets, rot } = activePiece;
     const cells = offsets[rot];
 
-    // Auto-play behaviors
-    if (!playerActive) {
-      // Auto-rotate every 4 steps
-      if (stepCount % 4 === 0) {
-        const nextRot = (rot + 1) % offsets.length;
-        if (!collides(offsets[nextRot], activePiece.col, activePiece.row)) {
-          activePiece.rot = nextRot;
-        }
-      }
-      // Gentle drift every 3 steps
-      if (stepCount % 3 === 0) {
-        const dir = Math.random() > 0.5 ? 1 : -1;
-        if (!collides(cells, activePiece.col + dir, activePiece.row)) {
-          activePiece.col += dir;
-        }
-      }
-    }
+    // Auto-play: pieces fall straight down with fixed rotation (set at spawn)
 
     // Drop one row
     const newRow = activePiece.row + 1;
