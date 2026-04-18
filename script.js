@@ -453,8 +453,8 @@
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    COLS = w < 480 ? 8 : 10;
-    SIDE = (w / COLS) * 2; // scale triangles to fill width
+    COLS = w < 480 ? 12 : 18;
+    SIDE = (w / COLS) * 2;
     TRI_H = SIDE * Math.sqrt(3) / 2;
     ROWS = Math.floor(h / TRI_H) - 1;
     initGrid();
