@@ -431,30 +431,46 @@
   let playerActive = false;
   let DROP_INTERVAL = 2000;
   let hintEl = null;
+  let score = 0;
 
   // ── Piece definitions (polyiamonds) ──
-  // Each piece: array of rotations, each rotation is array of [dc,dr] offsets
-  // Triangle orientation: up if (col+row)%2===0, down otherwise
+  // Offsets are [dc,dr] in triangle-grid coords.
+  // Multiple rotations per piece for variety.
   const PIECES = [
-    // Diamond (2 tri)
-    { offsets: [[[0,0],[1,0]], [[0,0],[0,1]]] },
-    // Strip-3
-    { offsets: [[[0,0],[1,0],[2,0]], [[0,0],[0,1],[0,2]]] },
-    // Corner (L-shape)
+    // Diamond (2 tri) — horizontal / vertical / diagonal
+    { offsets: [
+      [[0,0],[1,0]],
+      [[0,0],[0,1]],
+      [[0,0],[-1,1]],
+    ]},
+    // Strip-3 — horizontal / vertical / diagonal
+    { offsets: [
+      [[0,0],[1,0],[2,0]],
+      [[0,0],[0,1],[0,2]],
+      [[0,0],[-1,1],[-2,2]],
+    ]},
+    // Corner (L-shape) — 6 orientations
     { offsets: [
       [[0,0],[1,0],[1,1]],
       [[0,0],[0,1],[1,1]],
       [[0,0],[1,0],[0,1]],
       [[1,0],[0,1],[1,1]],
+      [[0,0],[1,0],[-1,1]],
+      [[0,0],[-1,1],[0,1]],
     ]},
-    // Chevron (4 tri zigzag)
+    // Chevron (4 tri zigzag) — 3 orientations
     { offsets: [
       [[0,0],[1,0],[1,1],[2,1]],
       [[0,0],[0,1],[1,1],[1,2]],
+      [[0,0],[1,0],[-1,1],[0,1]],
     ]},
-    // Strip-4
-    { offsets: [[[0,0],[1,0],[2,0],[3,0]], [[0,0],[0,1],[0,2],[0,3]]] },
-    // Block (2x2 compact)
+    // Strip-4 — horizontal / vertical / diagonal
+    { offsets: [
+      [[0,0],[1,0],[2,0],[3,0]],
+      [[0,0],[0,1],[0,2],[0,3]],
+      [[0,0],[-1,1],[-2,2],[-3,3]],
+    ]},
+    // Block (2x2 compact) — 1 orientation (symmetric)
     { offsets: [[[0,0],[1,0],[0,1],[1,1]]] },
   ];
 
@@ -546,11 +562,23 @@
     });
   }
 
+  function drawScore() {
+    if (score === 0) return;
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.font = '600 0.75rem monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(score.toLocaleString(), w - 16, 28);
+    ctx.restore();
+  }
+
   function renderGame() {
     ctx.clearRect(0, 0, w, h);
     drawGridLines();
     drawLockedCells();
     drawActivePiece();
+    drawScore();
   }
 
   // ── Collision ──
@@ -577,6 +605,7 @@
   }
 
   function clearRows() {
+    let cleared = 0;
     for (let r = ROWS - 1; r >= 0; r--) {
       if (grid[r].every(cell => cell !== null)) {
         grid.splice(r, 1);
@@ -584,8 +613,10 @@
         for (let c = 0; c < COLS; c++) newRow.push(null);
         grid.unshift(newRow);
         r++; // re-check this row index
+        cleared++;
       }
     }
+    if (cleared > 0) score += cleared * cleared * 100;
   }
 
   function checkGridReset() {
@@ -594,10 +625,10 @@
       for (let c = 0; c < COLS; c++)
         if (grid[r][c] !== null) filled++;
     if (filled / total > 0.8) {
-      // Dissolve from bottom up
       for (let r = ROWS - 1; r >= 0; r--) {
         for (let c = 0; c < COLS; c++) grid[r][c] = null;
       }
+      score = 0;
     }
   }
 
