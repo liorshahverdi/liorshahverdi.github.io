@@ -410,15 +410,15 @@
 
   // ── Constants ──
   const PIECE_COLORS = [
-    'rgba(59,130,246,0.35)',  // blue
-    'rgba(99,102,241,0.35)',  // indigo
-    'rgba(139,92,246,0.35)',  // violet
-    'rgba(79,70,229,0.35)',   // deep indigo
-    'rgba(96,165,250,0.35)',  // light blue
-    'rgba(129,140,248,0.35)', // periwinkle
+    'rgba(59,130,246,1)',   // blue
+    'rgba(99,102,241,1)',   // indigo
+    'rgba(139,92,246,1)',   // violet
+    'rgba(79,70,229,1)',    // deep indigo
+    'rgba(96,165,250,1)',   // light blue
+    'rgba(129,140,248,1)',  // periwinkle
   ];
-  const LOCKED_ALPHA = 0.15;
-  const GRID_LINE_ALPHA = 'rgba(255,255,255,0.02)';
+  const LOCKED_ALPHA = 0.6;
+  const GRID_LINE_ALPHA = 'rgba(255,255,255,0.08)';
 
   let SIDE, TRI_H, COLS, ROWS;
   let w, h, dpr;
@@ -541,7 +541,7 @@
     cells.forEach(([dc, dr]) => {
       const c = col + dc, r = row + dr;
       if (c >= 0 && c < COLS && r >= 0 && r < ROWS) {
-        drawTriangle(c, r, PIECE_COLORS[colorIdx], 0.35);
+        drawTriangle(c, r, PIECE_COLORS[colorIdx], 0.9);
       }
     });
   }
