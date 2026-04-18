@@ -435,21 +435,21 @@
   let scoreEl = null;
 
   // ── Piece definitions ──
-  // All pieces are horizontal strips or simple blocks that tile rows easily.
-  // Offsets are [dc,dr] in triangle-grid coords.
+  // Offsets [dc,dr]. Each piece has horizontal + vertical rotations.
+  // Vertical rotations use +2 row steps to preserve parity.
   const PIECES = [
-    // Pair (2 wide)
-    { offsets: [[[0,0],[1,0]]] },
-    // Strip-3 (3 wide)
-    { offsets: [[[0,0],[1,0],[2,0]]] },
-    // Strip-4 (4 wide)
-    { offsets: [[[0,0],[1,0],[2,0],[3,0]]] },
-    // Strip-5 (5 wide)
-    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0]]] },
-    // Strip-6 (6 wide — fills fast)
+    // Pair: horizontal / vertical
+    { offsets: [[[0,0],[1,0]], [[0,0],[0,2]]] },
+    // Strip-3: horizontal / vertical
+    { offsets: [[[0,0],[1,0],[2,0]], [[0,0],[0,2],[0,4]]] },
+    // Strip-4: horizontal / vertical
+    { offsets: [[[0,0],[1,0],[2,0],[3,0]], [[0,0],[0,2],[0,4],[0,6]]] },
+    // Strip-5: horizontal / vertical
+    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0]], [[0,0],[0,2],[0,4],[0,6],[0,8]]] },
+    // Strip-6: horizontal only (too tall vertical)
     { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]]] },
-    // Block (2x2 — rhombus)
-    { offsets: [[[0,0],[1,0],[0,1],[1,1]]] },
+    // Block (2x2): symmetric, no rotation needed
+    { offsets: [[[0,0],[1,0],[0,2],[1,2]]] },
   ];
 
   // ── DPI + sizing ──
@@ -493,12 +493,15 @@
     const pts = triPath(col, row);
     ctx.globalAlpha = alpha;
     ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(pts[0][0], pts[0][1]);
     ctx.lineTo(pts[1][0], pts[1][1]);
     ctx.lineTo(pts[2][0], pts[2][1]);
     ctx.closePath();
     ctx.fill();
+    ctx.stroke();
     ctx.globalAlpha = 1;
   }
 
