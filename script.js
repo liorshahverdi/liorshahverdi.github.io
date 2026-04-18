@@ -485,7 +485,8 @@
     SIDE = w < 480 ? 40 : 60;
     TRI_H = SIDE * Math.sqrt(3) / 2;
     COLS = Math.ceil(w / (SIDE / 2)) + 2;
-    ROWS = Math.ceil(h / TRI_H) + 2;
+    ROWS = Math.floor(h / TRI_H) - 1;
+    if (ROWS % 2 !== 0) ROWS--; // keep even for 2-row drop parity
     initGrid();
   }
 
@@ -573,9 +574,32 @@
     ctx.restore();
   }
 
+  function drawBoundary() {
+    const floorY = ROWS * TRI_H;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.lineWidth = 1.5;
+    // Bottom floor line
+    ctx.beginPath();
+    ctx.moveTo(0, floorY);
+    ctx.lineTo(w, floorY);
+    ctx.stroke();
+    // Side walls
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, floorY);
+    ctx.moveTo(w, 0);
+    ctx.lineTo(w, floorY);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   function renderGame() {
     ctx.clearRect(0, 0, w, h);
     drawGridLines();
+    drawBoundary();
     drawLockedCells();
     drawActivePiece();
     drawScore();
