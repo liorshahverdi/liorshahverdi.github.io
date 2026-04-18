@@ -462,7 +462,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     SIDE = w < 480 ? 40 : 60;
     TRI_H = SIDE * Math.sqrt(3) / 2;
-    COLS = Math.ceil(w / (SIDE / 2)) + 2;
+    COLS = Math.floor(w / (SIDE / 2));
     ROWS = Math.floor(h / TRI_H) - 1;
     initGrid();
   }
@@ -550,22 +550,23 @@
 
   function drawBoundary() {
     const floorY = ROWS * TRI_H;
+    const gridW = COLS * (SIDE / 2);
     ctx.save();
     ctx.strokeStyle = 'rgba(255,255,255,0.25)';
     ctx.lineWidth = 1.5;
     // Bottom floor line
     ctx.beginPath();
     ctx.moveTo(0, floorY);
-    ctx.lineTo(w, floorY);
+    ctx.lineTo(gridW, floorY);
     ctx.stroke();
     // Side walls
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, floorY);
-    ctx.moveTo(w, 0);
-    ctx.lineTo(w, floorY);
+    ctx.moveTo(gridW, 0);
+    ctx.lineTo(gridW, floorY);
     ctx.stroke();
     ctx.restore();
   }
@@ -670,14 +671,14 @@
   function onKeyDown(e) {
     if (!running || !activePiece) return;
     const key = e.key;
-    if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(key)) return;
+    if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(key)) return;
 
     e.preventDefault();
 
     // Activate player mode
     if (!playerActive) {
       playerActive = true;
-      DROP_INTERVAL = 1000;
+      DROP_INTERVAL = 1200;
       if (hintEl) { hintEl.remove(); hintEl = null; }
     }
 
@@ -693,6 +694,14 @@
       if (!collides(offsets[nextRot], col, row)) activePiece.rot = nextRot;
     } else if (key === 'ArrowDown') {
       if (!collides(offsets[rot], col, row + 1)) activePiece.row++;
+    } else if (key === ' ') {
+      // Hard drop
+      while (!collides(offsets[rot], col, activePiece.row + 1)) {
+        activePiece.row++;
+      }
+      lockPiece();
+      spawnPiece();
+      lastDrop = performance.now();
     }
   }
   window.addEventListener('keydown', onKeyDown);
