@@ -640,10 +640,12 @@
     const colorIdx = Math.floor(Math.random() * PIECE_COLORS.length);
     // Find width of this rotation to center spawn
     const maxDc = Math.max(...piece.offsets[rot].map(([dc]) => dc));
-    const col = Math.floor(Math.random() * (COLS - maxDc - 1));
+    let col = Math.floor(Math.random() * (COLS - maxDc - 1));
+    // Ensure even col so parity is consistent with even spawn row
+    if (col % 2 !== 0) col = Math.max(0, col - 1);
     activePiece = {
       offsets: piece.offsets,
-      col, row: -1, rot, colorIdx
+      col, row: 0, rot, colorIdx
     };
     // If immediate collision at spawn, just skip
     if (collides(activePiece.offsets[activePiece.rot], activePiece.col, 0)) {
@@ -660,9 +662,14 @@
 
     // Auto-play: pieces fall straight down with fixed rotation (set at spawn)
 
-    // Drop one row
-    const newRow = activePiece.row + 1;
+    // Drop by 2 rows to preserve triangle orientation parity
+    const newRow = activePiece.row + 2;
     if (collides(offsets[activePiece.rot], activePiece.col, newRow)) {
+      // Try 1 row as final landing
+      const oneRow = activePiece.row + 1;
+      if (!collides(offsets[activePiece.rot], activePiece.col, oneRow)) {
+        activePiece.row = oneRow;
+      }
       lockPiece();
       spawnPiece();
     } else {
@@ -689,14 +696,14 @@
     const cells = offsets[rot];
 
     if (key === 'ArrowLeft') {
-      if (!collides(cells, col - 1, row)) activePiece.col--;
+      if (!collides(cells, col - 2, row)) activePiece.col -= 2;
     } else if (key === 'ArrowRight') {
-      if (!collides(cells, col + 1, row)) activePiece.col++;
+      if (!collides(cells, col + 2, row)) activePiece.col += 2;
     } else if (key === 'ArrowUp') {
       const nextRot = (rot + 1) % offsets.length;
       if (!collides(offsets[nextRot], col, row)) activePiece.rot = nextRot;
     } else if (key === 'ArrowDown') {
-      const newRow = row + 1;
+      const newRow = row + 2;
       if (!collides(offsets[rot], col, newRow)) activePiece.row = newRow;
     }
   }
