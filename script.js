@@ -471,18 +471,19 @@
   // ── Triangle geometry ──
   function isUp(col, row) { return (col + row) % 2 === 0; }
 
-  function triPath(col, row) {
+  function triPath(col, row, forceUp) {
     const x = col * (SIDE / 2);
     const y = row * TRI_H;
-    if (isUp(col, row)) {
+    const up = forceUp !== undefined ? forceUp : isUp(col, row);
+    if (up) {
       return [[x, y + TRI_H], [x + SIDE / 2, y], [x + SIDE, y + TRI_H]];
     } else {
       return [[x, y], [x + SIDE, y], [x + SIDE / 2, y + TRI_H]];
     }
   }
 
-  function drawTriangle(col, row, color, alpha) {
-    const pts = triPath(col, row);
+  function drawTriangle(col, row, color, alpha, forceUp) {
+    const pts = triPath(col, row, forceUp);
     ctx.globalAlpha = alpha;
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
@@ -517,8 +518,9 @@
   function drawLockedCells() {
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
-        if (grid[r][c] !== null) {
-          drawTriangle(c, r, PIECE_COLORS[grid[r][c]], LOCKED_ALPHA);
+        const cell = grid[r][c];
+        if (cell !== null) {
+          drawTriangle(c, r, PIECE_COLORS[cell.colorIdx], LOCKED_ALPHA, cell.up);
         }
       }
     }
@@ -526,12 +528,14 @@
 
   function drawActivePiece() {
     if (!activePiece) return;
-    const { offsets, col, row, rot, colorIdx } = activePiece;
+    const { offsets, col, row, rot, colorIdx, spawnCol, spawnRow } = activePiece;
     const cells = offsets[rot];
     cells.forEach(([dc, dr]) => {
       const c = col + dc, r = row + dr;
       if (c >= 0 && c < COLS && r >= 0 && r < ROWS) {
-        drawTriangle(c, r, PIECE_COLORS[colorIdx], 0.9);
+        // Use spawn position parity so shape doesn't change during fall
+        const up = isUp(spawnCol + dc, spawnRow + dr);
+        drawTriangle(c, r, PIECE_COLORS[colorIdx], 0.9, up);
       }
     });
   }
@@ -586,10 +590,11 @@
   // ── Locking + row clearing ──
   function lockPiece() {
     if (!activePiece) return;
-    const { offsets, col, row, rot, colorIdx } = activePiece;
+    const { offsets, col, row, rot, colorIdx, spawnCol, spawnRow } = activePiece;
     offsets[rot].forEach(([dc, dr]) => {
       const c = col + dc, r = row + dr;
-      if (r >= 0 && r < ROWS && c >= 0 && c < COLS) grid[r][c] = colorIdx;
+      const up = isUp(spawnCol + dc, spawnRow + dr);
+      if (r >= 0 && r < ROWS && c >= 0 && c < COLS) grid[r][c] = { colorIdx, up };
     });
     activePiece = null;
     clearRows();
@@ -628,14 +633,14 @@
   function spawnPiece() {
     const typeIdx = Math.floor(Math.random() * PIECES.length);
     const piece = PIECES[typeIdx];
-    const rot = Math.floor(Math.random() * piece.offsets.length);
+    const rot = 0; // always spawn horizontal
     const colorIdx = Math.floor(Math.random() * PIECE_COLORS.length);
-    // Find width of this rotation to center spawn
     const maxDc = Math.max(...piece.offsets[rot].map(([dc]) => dc));
     const col = Math.floor(Math.random() * Math.max(1, COLS - maxDc - 1));
     activePiece = {
       offsets: piece.offsets,
-      col, row: 0, rot, colorIdx
+      col, row: 0, rot, colorIdx,
+      spawnCol: col, spawnRow: 0
     };
     // If immediate collision at spawn, just skip
     if (collides(activePiece.offsets[activePiece.rot], activePiece.col, 0)) {
@@ -684,7 +689,12 @@
       if (!collides(cells, col + 1, row)) activePiece.col++;
     } else if (key === 'ArrowUp') {
       const nextRot = (rot + 1) % offsets.length;
-      if (!collides(offsets[nextRot], col, row)) activePiece.rot = nextRot;
+      if (!collides(offsets[nextRot], col, row)) {
+        activePiece.rot = nextRot;
+        // Re-lock parity to current position so new shape is stable
+        activePiece.spawnCol = col;
+        activePiece.spawnRow = row;
+      }
     } else if (key === 'ArrowDown') {
       if (!collides(offsets[rot], col, row + 1)) activePiece.row++;
     } else if (key === ' ') {
