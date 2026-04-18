@@ -403,7 +403,7 @@
   Object.assign(canvas.style, {
     position: 'absolute', top: '0', left: '0',
     width: '100%', height: '100%',
-    zIndex: '-1', opacity: '0.10', pointerEvents: 'none'
+    zIndex: '1', opacity: '0.10', pointerEvents: 'none'
   });
   heroEl.insertBefore(canvas, heroEl.firstChild);
   const ctx = canvas.getContext('2d');
