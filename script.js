@@ -392,6 +392,352 @@
   heroObs.observe(heroEl);
 })();
 
+// ========== AMBIENT TRIANGLE-TETRIS ==========
+(function () {
+  const heroEl = document.querySelector('.hero');
+  if (!heroEl) return;
+
+  // ── Canvas setup ──
+  const canvas = document.createElement('canvas');
+  canvas.id = 'triCanvas';
+  Object.assign(canvas.style, {
+    position: 'absolute', top: '0', left: '0',
+    width: '100%', height: '100%',
+    zIndex: '-1', opacity: '0.10', pointerEvents: 'none'
+  });
+  heroEl.insertBefore(canvas, heroEl.firstChild);
+  const ctx = canvas.getContext('2d');
+
+  // ── Constants ──
+  const PIECE_COLORS = [
+    'rgba(59,130,246,0.35)',  // blue
+    'rgba(99,102,241,0.35)',  // indigo
+    'rgba(139,92,246,0.35)',  // violet
+    'rgba(79,70,229,0.35)',   // deep indigo
+    'rgba(96,165,250,0.35)',  // light blue
+    'rgba(129,140,248,0.35)', // periwinkle
+  ];
+  const LOCKED_ALPHA = 0.15;
+  const GRID_LINE_ALPHA = 'rgba(255,255,255,0.02)';
+
+  let SIDE, TRI_H, COLS, ROWS;
+  let w, h, dpr;
+  let grid = [];
+  let activePiece = null;
+  let running = false;
+  let animId;
+  let lastDrop = 0;
+  let stepCount = 0;
+  let playerActive = false;
+  let DROP_INTERVAL = 2000;
+  let hintEl = null;
+
+  // ── Piece definitions (polyiamonds) ──
+  // Each piece: array of rotations, each rotation is array of [dc,dr] offsets
+  // Triangle orientation: up if (col+row)%2===0, down otherwise
+  const PIECES = [
+    // Diamond (2 tri)
+    { offsets: [[[0,0],[1,0]], [[0,0],[0,1]]] },
+    // Strip-3
+    { offsets: [[[0,0],[1,0],[2,0]], [[0,0],[0,1],[0,2]]] },
+    // Corner (L-shape)
+    { offsets: [
+      [[0,0],[1,0],[1,1]],
+      [[0,0],[0,1],[1,1]],
+      [[0,0],[1,0],[0,1]],
+      [[1,0],[0,1],[1,1]],
+    ]},
+    // Chevron (4 tri zigzag)
+    { offsets: [
+      [[0,0],[1,0],[1,1],[2,1]],
+      [[0,0],[0,1],[1,1],[1,2]],
+    ]},
+    // Strip-4
+    { offsets: [[[0,0],[1,0],[2,0],[3,0]], [[0,0],[0,1],[0,2],[0,3]]] },
+    // Block (2x2 compact)
+    { offsets: [[[0,0],[1,0],[0,1],[1,1]]] },
+  ];
+
+  // ── DPI + sizing ──
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.clientWidth;
+    h = canvas.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    SIDE = w < 480 ? 40 : 60;
+    TRI_H = SIDE * Math.sqrt(3) / 2;
+    COLS = Math.ceil(w / (SIDE / 2)) + 2;
+    ROWS = Math.ceil(h / TRI_H) + 2;
+    initGrid();
+  }
+
+  function initGrid() {
+    grid = [];
+    for (let r = 0; r < ROWS; r++) {
+      grid[r] = [];
+      for (let c = 0; c < COLS; c++) grid[r][c] = null;
+    }
+  }
+
+  // ── Triangle geometry ──
+  function isUp(col, row) { return (col + row) % 2 === 0; }
+
+  function triPath(col, row) {
+    const x = col * (SIDE / 2);
+    const y = row * TRI_H;
+    if (isUp(col, row)) {
+      return [[x, y + TRI_H], [x + SIDE / 2, y], [x + SIDE, y + TRI_H]];
+    } else {
+      return [[x, y], [x + SIDE, y], [x + SIDE / 2, y + TRI_H]];
+    }
+  }
+
+  function drawTriangle(col, row, color, alpha) {
+    const pts = triPath(col, row);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    ctx.lineTo(pts[1][0], pts[1][1]);
+    ctx.lineTo(pts[2][0], pts[2][1]);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // ── Grid rendering ──
+  function drawGridLines() {
+    ctx.strokeStyle = GRID_LINE_ALPHA;
+    ctx.lineWidth = 0.5;
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const pts = triPath(c, r);
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        ctx.lineTo(pts[1][0], pts[1][1]);
+        ctx.lineTo(pts[2][0], pts[2][1]);
+        ctx.closePath();
+        ctx.stroke();
+      }
+    }
+  }
+
+  function drawLockedCells() {
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        if (grid[r][c] !== null) {
+          drawTriangle(c, r, PIECE_COLORS[grid[r][c]], LOCKED_ALPHA);
+        }
+      }
+    }
+  }
+
+  function drawActivePiece() {
+    if (!activePiece) return;
+    const { offsets, col, row, rot, colorIdx } = activePiece;
+    const cells = offsets[rot];
+    cells.forEach(([dc, dr]) => {
+      const c = col + dc, r = row + dr;
+      if (c >= 0 && c < COLS && r >= 0 && r < ROWS) {
+        drawTriangle(c, r, PIECE_COLORS[colorIdx], 0.35);
+      }
+    });
+  }
+
+  function renderGame() {
+    ctx.clearRect(0, 0, w, h);
+    drawGridLines();
+    drawLockedCells();
+    drawActivePiece();
+  }
+
+  // ── Collision ──
+  function collides(offsets, col, row) {
+    for (const [dc, dr] of offsets) {
+      const c = col + dc, r = row + dr;
+      if (c < 0 || c >= COLS || r >= ROWS) return true;
+      if (r >= 0 && grid[r][c] !== null) return true;
+    }
+    return false;
+  }
+
+  // ── Locking + row clearing ──
+  function lockPiece() {
+    if (!activePiece) return;
+    const { offsets, col, row, rot, colorIdx } = activePiece;
+    offsets[rot].forEach(([dc, dr]) => {
+      const c = col + dc, r = row + dr;
+      if (r >= 0 && r < ROWS && c >= 0 && c < COLS) grid[r][c] = colorIdx;
+    });
+    activePiece = null;
+    clearRows();
+    checkGridReset();
+  }
+
+  function clearRows() {
+    for (let r = ROWS - 1; r >= 0; r--) {
+      if (grid[r].every(cell => cell !== null)) {
+        grid.splice(r, 1);
+        const newRow = [];
+        for (let c = 0; c < COLS; c++) newRow.push(null);
+        grid.unshift(newRow);
+        r++; // re-check this row index
+      }
+    }
+  }
+
+  function checkGridReset() {
+    let filled = 0, total = ROWS * COLS;
+    for (let r = 0; r < ROWS; r++)
+      for (let c = 0; c < COLS; c++)
+        if (grid[r][c] !== null) filled++;
+    if (filled / total > 0.8) {
+      // Dissolve from bottom up
+      for (let r = ROWS - 1; r >= 0; r--) {
+        for (let c = 0; c < COLS; c++) grid[r][c] = null;
+      }
+    }
+  }
+
+  // ── Piece spawning ──
+  function spawnPiece() {
+    const typeIdx = Math.floor(Math.random() * PIECES.length);
+    const piece = PIECES[typeIdx];
+    const rot = Math.floor(Math.random() * piece.offsets.length);
+    const colorIdx = Math.floor(Math.random() * PIECE_COLORS.length);
+    // Find width of this rotation to center spawn
+    const maxDc = Math.max(...piece.offsets[rot].map(([dc]) => dc));
+    const col = Math.floor(Math.random() * (COLS - maxDc - 1));
+    activePiece = {
+      offsets: piece.offsets,
+      col, row: -1, rot, colorIdx
+    };
+    // If immediate collision at spawn, just skip
+    if (collides(activePiece.offsets[activePiece.rot], activePiece.col, 0)) {
+      activePiece = null;
+    }
+  }
+
+  // ── Gravity step ──
+  function stepGravity() {
+    if (!activePiece) { spawnPiece(); return; }
+    stepCount++;
+    const { offsets, rot } = activePiece;
+    const cells = offsets[rot];
+
+    // Auto-play behaviors
+    if (!playerActive) {
+      // Auto-rotate every 4 steps
+      if (stepCount % 4 === 0) {
+        const nextRot = (rot + 1) % offsets.length;
+        if (!collides(offsets[nextRot], activePiece.col, activePiece.row)) {
+          activePiece.rot = nextRot;
+        }
+      }
+      // Gentle drift every 3 steps
+      if (stepCount % 3 === 0) {
+        const dir = Math.random() > 0.5 ? 1 : -1;
+        if (!collides(cells, activePiece.col + dir, activePiece.row)) {
+          activePiece.col += dir;
+        }
+      }
+    }
+
+    // Drop one row
+    const newRow = activePiece.row + 1;
+    if (collides(offsets[activePiece.rot], activePiece.col, newRow)) {
+      lockPiece();
+      spawnPiece();
+    } else {
+      activePiece.row = newRow;
+    }
+  }
+
+  // ── Keyboard controls ──
+  function onKeyDown(e) {
+    if (!running || !activePiece) return;
+    const key = e.key;
+    if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(key)) return;
+
+    e.preventDefault();
+
+    // Activate player mode
+    if (!playerActive) {
+      playerActive = true;
+      DROP_INTERVAL = 1000;
+      if (hintEl) { hintEl.remove(); hintEl = null; }
+    }
+
+    const { offsets, rot, col, row } = activePiece;
+    const cells = offsets[rot];
+
+    if (key === 'ArrowLeft') {
+      if (!collides(cells, col - 1, row)) activePiece.col--;
+    } else if (key === 'ArrowRight') {
+      if (!collides(cells, col + 1, row)) activePiece.col++;
+    } else if (key === 'ArrowUp') {
+      const nextRot = (rot + 1) % offsets.length;
+      if (!collides(offsets[nextRot], col, row)) activePiece.rot = nextRot;
+    } else if (key === 'ArrowDown') {
+      const newRow = row + 1;
+      if (!collides(offsets[rot], col, newRow)) activePiece.row = newRow;
+    }
+  }
+  window.addEventListener('keydown', onKeyDown);
+
+  // ── Hint text ──
+  function createHint() {
+    hintEl = document.createElement('span');
+    hintEl.textContent = 'press arrow keys to play';
+    Object.assign(hintEl.style, {
+      position: 'absolute', bottom: '2rem', left: '50%',
+      transform: 'translateX(-50%)',
+      fontFamily: 'inherit', fontSize: '0.85rem', letterSpacing: '0.05em',
+      color: 'rgba(255,255,255,0.15)',
+      opacity: '0', transition: 'opacity 1s ease',
+      pointerEvents: 'none', zIndex: '1',
+    });
+    heroEl.appendChild(hintEl);
+    setTimeout(() => { if (hintEl) hintEl.style.opacity = '1'; }, 3500);
+  }
+
+  // ── Main loop ──
+  function triLoop(now) {
+    if (!running) return;
+    animId = requestAnimationFrame(triLoop);
+    if (now - lastDrop >= DROP_INTERVAL) {
+      lastDrop = now;
+      stepGravity();
+    }
+    renderGame();
+  }
+
+  // ── IntersectionObserver ──
+  const triObs = new IntersectionObserver(entries => {
+    running = entries[0].isIntersecting;
+    if (running) {
+      lastDrop = performance.now();
+      animId = requestAnimationFrame(triLoop);
+    } else {
+      cancelAnimationFrame(animId);
+    }
+  }, { threshold: 0 });
+  triObs.observe(heroEl);
+
+  // ── Resize handler ──
+  window.addEventListener('resize', resize);
+
+  // ── Kickoff ──
+  resize();
+  spawnPiece();
+  createHint();
+  running = true;
+  lastDrop = performance.now();
+  animId = requestAnimationFrame(triLoop);
+})();
+
 // ========== CAROUSEL ==========
 document.querySelectorAll('.carousel').forEach(carousel => {
   const track = carousel.querySelector('.carousel__track');
