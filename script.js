@@ -435,21 +435,21 @@
   let scoreEl = null;
 
   // ── Piece definitions ──
-  // Offsets [dc,dr]. Each piece has horizontal + vertical rotations.
-  // Vertical rotations use +2 row steps to preserve parity.
+  // Offsets [dc,dr]. Adjacent rows (dr+1) share edges in the tri grid.
+  // Drop-by-2 preserves parity for all cells uniformly.
   const PIECES = [
     // Pair: horizontal / vertical
-    { offsets: [[[0,0],[1,0]], [[0,0],[0,2]]] },
+    { offsets: [[[0,0],[1,0]], [[0,0],[0,1]]] },
     // Strip-3: horizontal / vertical
-    { offsets: [[[0,0],[1,0],[2,0]], [[0,0],[0,2],[0,4]]] },
+    { offsets: [[[0,0],[1,0],[2,0]], [[0,0],[0,1],[0,2]]] },
     // Strip-4: horizontal / vertical
-    { offsets: [[[0,0],[1,0],[2,0],[3,0]], [[0,0],[0,2],[0,4],[0,6]]] },
+    { offsets: [[[0,0],[1,0],[2,0],[3,0]], [[0,0],[0,1],[0,2],[0,3]]] },
     // Strip-5: horizontal / vertical
-    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0]], [[0,0],[0,2],[0,4],[0,6],[0,8]]] },
-    // Strip-6: horizontal only (too tall vertical)
+    { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0]], [[0,0],[0,1],[0,2],[0,3],[0,4]]] },
+    // Strip-6: horizontal only (vertical too tall)
     { offsets: [[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]]] },
-    // Block (2x2): symmetric, no rotation needed
-    { offsets: [[[0,0],[1,0],[0,2],[1,2]]] },
+    // Block (2x2): symmetric
+    { offsets: [[[0,0],[1,0],[0,1],[1,1]]] },
   ];
 
   // ── DPI + sizing ──
