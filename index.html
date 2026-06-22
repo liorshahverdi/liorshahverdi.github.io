@@ -49,28 +49,32 @@
     <article class="project project--featured">
       <div class="project__inner">
         <div class="project__carousel-wrap">
-          <div class="project-visual project-visual--memory" aria-label="DevMemoryIndex architecture preview">
-            <div class="project-visual__topbar"><span></span><span></span><span></span></div>
-            <pre class="project-visual__code"><code>devmemory ingest --source git
-indexed: commits · terminal · notes · agents
-
-hybrid_search("redis timeout")
-→ semantic score + keyword score + metadata
-
-mcp.search_memories(task_context)
-→ relevant fixes, decisions, failures</code></pre>
+          <div class="carousel" aria-label="DevMemoryIndex screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/devmemoryindex/1.png" alt="DevMemoryIndex hybrid search results across MCP docs, source files, and commits" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/devmemoryindex/2.png" alt="DevMemoryIndex AI-ready context builder output for agent prompts" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/devmemoryindex/3.png" alt="DevMemoryIndex memory store health dashboard with type breakdown and maintenance signals" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Slide 1"></button>
+              <button class="carousel__dot" aria-label="Slide 2"></button>
+              <button class="carousel__dot" aria-label="Slide 3"></button>
+            </div>
           </div>
         </div>
         <div class="project__info">
           <div class="project__number font-mono">00</div>
           <h2 class="project__name font-serif">DevMemoryIndex</h2>
-          <p class="project__desc">A persistent developer memory layer that captures workflow knowledge from git commits, terminal history, markdown notes, meetings, browser activity, and AI-agent sessions, then retrieves it through LanceDB-backed hybrid semantic/keyword search, FastAPI, a Typer CLI, background daemon, git hooks, and Claude Code MCP tools.</p>
+          <p class="project__desc">A local-first developer memory platform that indexes git history, diffs, terminal commands, source files, markdown notes, browser metadata, meetings, and agent sessions into LanceDB, then serves high-signal recall through hybrid semantic/keyword search, AI-ready context packing, a Typer/Rich CLI, FastAPI REST endpoints, native daemon scheduling, memory-graph relationships, and a 19-tool MCP server for Hermes and other coding agents.</p>
           <div class="project__tags">
-            <span class="tag">Python</span>
-            <span class="tag">FastAPI</span>
-            <span class="tag">Typer</span>
+            <span class="tag">Python 3.12</span>
             <span class="tag">LanceDB</span>
-            <span class="tag">MCP</span>
+            <span class="tag">MCP Server</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Typer/Rich</span>
+            <span class="tag">Systemd/Launchd</span>
           </div>
           <div class="project__links">
             <a href="https://github.com/liorshahverdi/devmemoryindex" target="_blank" rel="noopener" class="project__link">
