@@ -32,6 +32,11 @@ img {
   height: auto;
 }
 
+video {
+  display: block;
+  max-width: 100%;
+}
+
 button {
   font: inherit;
   border: none;
@@ -444,6 +449,14 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.carousel__slide video,
+.carousel__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111;
 }
 
 /* Placeholder for missing screenshots */

@@ -402,11 +402,28 @@ document.querySelectorAll('.carousel').forEach(carousel => {
   let current = 0;
   const total = slides.length;
 
+  function syncVideoPlayback() {
+    slides.forEach((slide, idx) => {
+      slide.querySelectorAll('video').forEach(video => {
+        if (idx === current) {
+          video.play().catch(() => {
+            // Autoplay can be blocked in some browsers; the poster remains visible.
+          });
+        } else {
+          video.pause();
+        }
+      });
+    });
+  }
+
   function goTo(i) {
     current = (i + total) % total;
     track.style.transform = `translateX(-${current * 100}%)`;
     dots.forEach((d, idx) => d.classList.toggle('carousel__dot--active', idx === current));
+    syncVideoPlayback();
   }
+
+  syncVideoPlayback();
 
   prevBtn?.addEventListener('click', () => goTo(current - 1));
   nextBtn?.addEventListener('click', () => goTo(current + 1));
