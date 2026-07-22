@@ -16,7 +16,6 @@
   <nav class="nav">
     <a href="#" class="nav__logo font-mono">Lior Shahverdi</a>
     <div class="nav__links">
-      <a href="#recent-build" class="nav__link">Recent</a>
       <a href="#projects" class="nav__link">Projects</a>
       <a href="assets/resume/Lior_Shahverdi_Resume.pdf" class="nav__link" target="_blank" rel="noopener">PDF</a>
       <a href="https://www.linkedin.com/in/lior-shahverdi/" target="_blank" rel="noopener" class="nav__link nav__link--icon" aria-label="LinkedIn">
@@ -43,15 +42,11 @@
     </div>
   </section>
 
-  <!-- Recent Build -->
-  <section id="recent-build" class="recent-build">
-    <div class="section-heading">
-      <p class="section-heading__eyebrow font-mono">Recently deployed</p>
-      <h2 class="section-heading__title font-serif">Practical privacy tooling for image workflows.</h2>
-      <p class="section-heading__desc">A focused ship: upload an image, review detected PHI/PII, choose exactly what to redact, then download a cleaned copy with optional manual redaction boxes for anything OCR missed.</p>
-    </div>
+  <!-- Projects -->
+  <section id="projects" class="projects">
 
-    <article class="project project--recent">
+    <!-- 00 — rdctr -->
+    <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
           <div class="carousel" aria-label="rdctr screenshots">
@@ -70,7 +65,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">NEW</div>
+          <div class="project__number font-mono">00</div>
           <h2 class="project__name font-serif">rdctr</h2>
           <p class="project__desc">A browser-based redaction utility for images containing sensitive text. rdctr runs OCR, classifies likely PHI/PII such as names, dates of birth, emails, and MRNs, overlays every detected bounding box for human review, and produces a redacted image only after the user approves the selections. It also supports aggressive OCR preprocessing and manual drag-to-redact boxes for missed regions.</p>
           <div class="project__tags">
@@ -89,12 +84,8 @@
         </div>
       </div>
     </article>
-  </section>
 
-  <!-- Projects -->
-  <section id="projects" class="projects">
-
-    <!-- 00 — DevMemoryIndex -->
+    <!-- 01 — DevMemoryIndex -->
     <article class="project project--featured">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -114,7 +105,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">00</div>
+          <div class="project__number font-mono">01</div>
           <h2 class="project__name font-serif">DevMemoryIndex</h2>
           <p class="project__desc">A local-first developer memory platform that indexes git history, diffs, terminal commands, source files, markdown notes, browser metadata, meetings, and agent sessions into LanceDB, then serves high-signal recall through hybrid semantic/keyword search, AI-ready context packing, a Typer/Rich CLI, FastAPI REST endpoints, native daemon scheduling, memory-graph relationships, and a 19-tool MCP server for Hermes and other coding agents.</p>
           <div class="project__tags">
@@ -139,7 +130,7 @@
       </div>
     </article>
 
-    <!-- 01 — Browser Jockey -->
+    <!-- 02 — Browser Jockey -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -163,7 +154,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">01</div>
+          <div class="project__number font-mono">02</div>
           <h2 class="project__name font-serif">Browser Jockey</h2>
           <p class="project__desc">A dual-track DJ mixing web app with multi-track sequencer, BPM detection, beat snap, hot cues, 3D audio visualization, microphone vocoder/auto-tune, and a live Strudel pattern deck for coding beats in the browser.</p>
           <div class="project__tags">
@@ -186,7 +177,7 @@
       </div>
     </article>
 
-    <!-- 02 — Luckaro -->
+    <!-- 03 — Luckaro -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -210,7 +201,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">02</div>
+          <div class="project__number font-mono">03</div>
           <h2 class="project__name font-serif">Luckaro</h2>
           <p class="project__desc">A physics-based destruction game blending Angry Birds with Balatro mechanics. Flick playing cards at structures to destroy blocks using a power × luck system, with wave progression, charms, consumables, and a shop.</p>
           <div class="project__tags">
@@ -229,7 +220,7 @@
       </div>
     </article>
 
-    <!-- 03 — voice-news -->
+    <!-- 04 — voice-news -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -249,7 +240,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">03</div>
+          <div class="project__number font-mono">04</div>
           <h2 class="project__name font-serif">voice-news</h2>
           <p class="project__desc">A privacy-first spoken news briefing that pulls headlines from RSS, Hacker News, and Reddit, deduplicates stories, writes a podcast-style script with a local LLM, and reads it aloud using on-device TTS — no cloud APIs required.</p>
           <div class="project__tags">
@@ -272,7 +263,7 @@
       </div>
     </article>
 
-    <!-- 04 — File Push -->
+    <!-- 05 — File Push -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -292,7 +283,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">04</div>
+          <div class="project__number font-mono">05</div>
           <h2 class="project__name font-serif">File Push</h2>
           <p class="project__desc">Wireless file transfer over WiFi with zero friction. Serve a folder, scan a QR code, download files on your phone. Multi-folder support, PIN auth, uploads, ZIP archives — all traffic stays on your LAN.</p>
           <div class="project__tags">
@@ -305,7 +296,7 @@
       </div>
     </article>
 
-    <!-- 05 — Markdown Notes -->
+    <!-- 06 — Markdown Notes -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -325,7 +316,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">05</div>
+          <div class="project__number font-mono">06</div>
           <h2 class="project__name font-serif">Markdown Notes</h2>
           <p class="project__desc">A local-first markdown wiki and note-taking app with foldered vault browsing, Mermaid-aware editing, source ingestion, wiki maintenance, RAG-powered chat via local LLMs, voice dictation, and semantic search.</p>
           <div class="project__tags">
@@ -338,7 +329,7 @@
       </div>
     </article>
 
-    <!-- 06 — PDF Audio -->
+    <!-- 07 — PDF Audio -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -358,7 +349,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">06</div>
+          <div class="project__number font-mono">07</div>
           <h2 class="project__name font-serif">PDF Audio</h2>
           <p class="project__desc">Convert PDF research papers into lecture-style audio entirely offline. Extracts text via PyMuPDF4LLM, cleans and chunks content, then synthesizes natural speech using Kokoro TTS — no API keys required.</p>
           <div class="project__tags">
@@ -377,7 +368,7 @@
       </div>
     </article>
 
-    <!-- 07 — PhysIQ -->
+    <!-- 08 — PhysIQ -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -397,7 +388,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">07</div>
+          <div class="project__number font-mono">08</div>
           <h2 class="project__name font-serif">PhysIQ</h2>
           <p class="project__desc">Private, offline-first fitness coaching with a Rust TUI desktop app and native Kotlin Android app. Voice-input meal and exercise tracking, local LLM recommendations, GPS activity tracking, and LAN-based device sync.</p>
           <div class="project__tags">
@@ -411,7 +402,7 @@
       </div>
     </article>
 
-    <!-- 08 — Trivia Jam -->
+    <!-- 09 — Trivia Jam -->
     <article class="project">
       <div class="project__inner">
         <div class="project__carousel-wrap">
@@ -435,7 +426,7 @@
           </div>
         </div>
         <div class="project__info">
-          <div class="project__number font-mono">08</div>
+          <div class="project__number font-mono">09</div>
           <h2 class="project__name font-serif">Trivia Jam</h2>
           <p class="project__desc">A real-time multiplayer trivia game with host/player roles over WebSockets. Category-based questions, game modes, leaderboards, and automatic question crawling from online sources every 6 hours.</p>
           <div class="project__tags">

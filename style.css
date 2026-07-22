@@ -244,47 +244,6 @@ button {
 }
 
 /* ========== PROJECTS ========== */
-.recent-build {
-  padding: 7rem 0 0;
-  background:
-    radial-gradient(circle at 18% 8%, rgba(37, 99, 235, 0.14), transparent 24rem),
-    radial-gradient(circle at 82% 48%, rgba(16, 185, 129, 0.08), transparent 22rem),
-    #0a0a0a;
-  border-top: 1px solid #151515;
-}
-
-.section-heading {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 clamp(1.5rem, 4vw, 4rem) 1.5rem;
-}
-
-.section-heading__eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #6ba1f7;
-  margin-bottom: 0.75rem;
-}
-
-.section-heading__title {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-  max-width: 820px;
-}
-
-.section-heading__desc {
-  max-width: 760px;
-  margin-top: 1.2rem;
-  color: #9ca3af;
-  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
-  line-height: 1.75;
-}
-
 .projects {
   padding: 4rem 0 8rem;
 }
@@ -396,20 +355,6 @@ button {
   background:
     radial-gradient(circle at 70% 20%, rgba(59, 130, 246, 0.12), transparent 26rem),
     #0a0a0a;
-}
-
-.project--recent {
-  border-bottom-color: rgba(59, 130, 246, 0.18);
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.035), rgba(10, 10, 10, 0));
-}
-
-.project--recent .project__number {
-  color: rgba(107, 161, 247, 0.18);
-  font-size: clamp(2.7rem, 5vw, 4.6rem);
-}
-
-.project--recent .carousel {
-  box-shadow: 0 28px 90px rgba(37, 99, 235, 0.16);
 }
 
 .project-visual {
