@@ -16,6 +16,7 @@
   <nav class="nav">
     <a href="#" class="nav__logo font-mono">Lior Shahverdi</a>
     <div class="nav__links">
+      <a href="#recent-build" class="nav__link">Recent</a>
       <a href="#projects" class="nav__link">Projects</a>
       <a href="assets/resume/Lior_Shahverdi_Resume.pdf" class="nav__link" target="_blank" rel="noopener">PDF</a>
       <a href="https://www.linkedin.com/in/lior-shahverdi/" target="_blank" rel="noopener" class="nav__link nav__link--icon" aria-label="LinkedIn">
@@ -40,6 +41,54 @@
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
     </div>
+  </section>
+
+  <!-- Recent Build -->
+  <section id="recent-build" class="recent-build">
+    <div class="section-heading">
+      <p class="section-heading__eyebrow font-mono">Recently deployed</p>
+      <h2 class="section-heading__title font-serif">Practical privacy tooling for image workflows.</h2>
+      <p class="section-heading__desc">A focused ship: upload an image, review detected PHI/PII, choose exactly what to redact, then download a cleaned copy with optional manual redaction boxes for anything OCR missed.</p>
+    </div>
+
+    <article class="project project--recent">
+      <div class="project__inner">
+        <div class="project__carousel-wrap">
+          <div class="carousel" aria-label="rdctr screenshots">
+            <div class="carousel__track">
+              <div class="carousel__slide"><img src="assets/screenshots/rdctr/1.png" alt="rdctr upload screen with OCR preprocessing option" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/rdctr/2.png" alt="rdctr review table showing detected PHI and PII regions over an uploaded image" loading="lazy"></div>
+              <div class="carousel__slide"><img src="assets/screenshots/rdctr/3.png" alt="rdctr redacted output with report and manual redaction controls" loading="lazy"></div>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+            <div class="carousel__dots">
+              <button class="carousel__dot carousel__dot--active" aria-label="Upload screen"></button>
+              <button class="carousel__dot" aria-label="Detection review"></button>
+              <button class="carousel__dot" aria-label="Redacted output"></button>
+            </div>
+          </div>
+        </div>
+        <div class="project__info">
+          <div class="project__number font-mono">NEW</div>
+          <h2 class="project__name font-serif">rdctr</h2>
+          <p class="project__desc">A browser-based redaction utility for images containing sensitive text. rdctr runs OCR, classifies likely PHI/PII such as names, dates of birth, emails, and MRNs, overlays every detected bounding box for human review, and produces a redacted image only after the user approves the selections. It also supports aggressive OCR preprocessing and manual drag-to-redact boxes for missed regions.</p>
+          <div class="project__tags">
+            <span class="tag">OCR</span>
+            <span class="tag">PHI/PII Detection</span>
+            <span class="tag">Human Review</span>
+            <span class="tag">Image Redaction</span>
+            <span class="tag">Fly.io</span>
+          </div>
+          <div class="project__links">
+            <a href="https://rdctr.fly.dev/" target="_blank" rel="noopener" class="project__link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Live Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
   </section>
 
   <!-- Projects -->
